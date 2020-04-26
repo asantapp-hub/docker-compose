@@ -1,0 +1,370 @@
+version: '3.7'
+services:
+
+
+#      __ __    _              __               
+#   / // /__ (_)__ ___ ___  / /  ___ _______ _
+#  / _  / -_) (_-</ -_) _ \/ _ \/ -_) __/ _ `/
+# /_//_/\__/_/___/\__/_//_/_.__/\__/_/  \_, / 
+#                                      /___/  
+  rabbitmq:
+    image: rabbitmq:3.5.3-management
+    ports:
+      - "5672"
+      # - "15672:15672"
+    restart: always
+    networks:
+      - asantapp-network
+
+  db-asantapp:
+    image: mysql:5.7
+    ports:
+      - "23306:3306"
+    restart: always
+    command:  --character-set-server=utf8
+              --collation-server=utf8_unicode_ci
+              --connect-timeout=10
+              --max-connections=1000
+    volumes:
+        - /usr/services/asantapp/mySqlData:/var/lib/mysql
+        - /usr/services/asantapp/allData:/usr/services
+    environment:
+        MYSQL_DATABASE: 'xmies_properties'
+        MYSQL_USER: 'asanUser'
+        MYSQL_PASSWORD: '@sanTapp!@#$%^123'
+        MYSQL_ROOT_PASSWORD: 'root123'
+    networks:
+      - asantapp-network
+
+  redis-db:
+    image: redis:3.2-alpine
+    #container_name: redis-db
+    restart: always
+    volumes:
+      - redis_data:/data
+    # ports:
+    #   - "6379"
+    networks:
+      - asantapp-network
+
+# spring-cloud-config-server
+#  spring-cloud:
+ #   image: heisenberg13contasoft/spring-cloud-config-server:0.0.1-SNAPSHOT
+    #build:
+     # context: spring-cloud-config-server
+      #dockerfile: Dockerfile
+   # ports:
+  #    - "28888:8888"
+    #restart: always
+    #depends_on:
+    #  - db
+    #networks:
+    #  - asantapp-network
+
+#eureke-server
+  naming-server:
+    image: heisenberg13contasoft/netflix-eureka-naming-server:0.0.2
+    #build:
+     # context: netflix-eureka-naming-server
+      #dockerfile: Dockerfile
+    ports:
+      - "18761:8761"
+    restart: always
+    networks:
+      - asantapp-network
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    #container_name: zipkin
+    environment:
+      STORAGE_TYPE: mem
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    # ports:
+    #   - "29411:9411"
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - asantapp-network
+
+
+  zuul-api-gateway:
+    image: heisenberg13contasoft/netflix-zuul-api-gateway-server:0.0.2
+    #build:
+     # context: netflix-zuul-api-gateway-server
+      #dockerfile: Dockerfile
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "18765:8765"
+    restart: always
+    depends_on:
+      - naming-server
+      - rabbitmq
+      - zipkin-server
+    networks:
+      - asantapp-network
+
+
+#    .-'''-.   ___    _   ____..--'   ____     __  
+#   / _     \.'   |  | | |        |   \   \   /  / 
+#  (`' )/`--'|   .'  | | |   .-'  '    \  _. /  '  
+# (_ o _).   .'  '_  | | |.-'.'   /     _( )_ .'   
+#  (_,_). '. '   ( \.-.|    /   _/  ___(_ o _)'    
+# .---.  \  :' (`. _` /|  .'._( )_ |   |(_,_)'     
+# \    `-'  || (_ (_) _).'  (_'o._)|   `-'  /      
+#  \       /  \ /  . \ /|    (_,_)| \      /       
+#   `-...-'    ``-'`-'' |_________|  `-..-'        
+    
+
+  
+
+
+
+# __/\\\\\_____/\\\______________________________/\\\\\\_________________________________        
+#  _\/\\\\\\___\/\\\_____________________________\////\\\_________________________________       
+#   _\/\\\/\\\__\/\\\________________________________\/\\\_________________________________      
+#    _\/\\\//\\\_\/\\\__/\\\____/\\\__/\\/\\\\\\\_____\/\\\_____/\\\\\\\\\_____/\\/\\\\\\___     
+#     _\/\\\\//\\\\/\\\_\/\\\___\/\\\_\/\\\/////\\\____\/\\\____\////////\\\___\/\\\////\\\__    
+#      _\/\\\_\//\\\/\\\_\/\\\___\/\\\_\/\\\___\///_____\/\\\______/\\\\\\\\\\__\/\\\__\//\\\_   
+#       _\/\\\__\//\\\\\\_\/\\\___\/\\\_\/\\\____________\/\\\_____/\\\/////\\\__\/\\\___\/\\\_  
+#        _\/\\\___\//\\\\\_\//\\\\\\\\\__\/\\\__________/\\\\\\\\\_\//\\\\\\\\/\\_\/\\\___\/\\\_ 
+#         _\///_____\/////___\/////////___\///__________\/////////___\////////\//__\///____\///__ 
+ 
+asantapp-users:
+        image: uniquedevelopment/asantapp-users:0.0.1
+        ports:
+         - "8790"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-service-request:
+        image: uniquedevelopment/asantapp-service-request:0.0.1
+        ports:
+         - "8775"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-qeydiyyat-data:
+        image: uniquedevelopment/asantapp-qeydiyyat-data:0.0.1
+        ports:
+         - "8157"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-user-rank:
+        image: uniquedevelopment/asantapp-user-rank:0.0.1
+        ports:
+         - "7676"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-services:
+        image: uniquedevelopment/asantapp-services:0.0.1
+        ports:
+         - "8585"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-balancelog:
+        image: uniquedevelopment/asantapp-balancelog:0.0.1
+        ports:
+         - "8786"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-user-confirm:
+        image: uniquedevelopment/asantapp-user-confirm:0.0.1
+        ports:
+         - "6878"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-sms:
+        image: uniquedevelopment/asantapp-sms:0.0.1
+        ports:
+         - "7577"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-user-balance:
+        image: uniquedevelopment/asantapp-user-balance:0.0.1
+        ports:
+         - "8594"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-usercomments:
+        image: uniquedevelopment/asantapp-usercomments:0.0.1
+        ports:
+         - "9643"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-user-services:
+        image: uniquedevelopment/asantapp-user-services:0.0.1
+        ports:
+         - "8589"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+asantapp-login:
+        image: uniquedevelopment/asantapp-login:0.0.1
+        ports:
+         - "8591"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
+
+
+
+
+#  *******                   **                          
+# /**////**           ****  //   **   **  **   **        
+# /**   /**  **   ** **//**  ** //** **  //** **   ***** 
+# /*******  /**  /**/** /** /**  //***    //***   **///**
+# /**///**  /**  /**//***** /**   /**      /**   /*******
+# /**  //** /**  /** ////** /**   **       **    /**//// 
+# /**   //**//******    /***/**  **       **     //******
+# //     //  //////     /// //  //       //       ////// 
+
+
+
+
+volumes:
+  redis_data:
+
+networks:
+  asantapp-network:
