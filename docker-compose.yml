@@ -347,6 +347,24 @@ asantapp-login:
           - asantapp-network
 
 
+asantapp-userservice-data:
+        image: uniquedevelopment/asantapp-userservice-data:0.0.1
+        ports:
+         - "6928"
+        restart: always
+
+        depends_on:
+          - db-asantapp
+         # - spring-cloud
+          - naming-server
+          - rabbitmq
+          - redis-db
+          - zipkin-server
+          - zuul-api-gateway
+        networks:
+          - asantapp-network
+
+
 
 
 
