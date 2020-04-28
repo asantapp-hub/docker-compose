@@ -7,7 +7,7 @@ services:
 #  / _  / -_) (_-</ -_) _ \/ _ \/ -_) __/ _ `/
 # /_//_/\__/_/___/\__/_//_/_.__/\__/_/  \_, / 
 #                                      /___/  
-  rabbitmq:
+ rabbitmq:
     image: rabbitmq:3.5.3-management
     ports:
       - "5672"
@@ -16,7 +16,7 @@ services:
     networks:
       - asantapp-network
 
-  db-asantapp:
+ db-asantapp:
     image: mysql:5.7
     ports:
       - "23306:3306"
@@ -31,12 +31,11 @@ services:
     environment:
         MYSQL_DATABASE: 'xmies_properties'
         MYSQL_USER: 'asanUser'
-        MYSQL_PASSWORD: '@sanTapp!@#$%^123'
         MYSQL_ROOT_PASSWORD: 'root123'
     networks:
       - asantapp-network
 
-  redis-db:
+ redis-db:
     image: redis:3.2-alpine
     #container_name: redis-db
     restart: always
@@ -62,8 +61,8 @@ services:
     #  - asantapp-network
 
 #eureke-server
-  naming-server:
-    image: heisenberg13contasoft/netflix-eureka-naming-server:0.0.2
+ naming-server:
+    image: heisenberg13contasoft/netflix-eureka-naming-server:0.0.2-TOVUZ
     #build:
      # context: netflix-eureka-naming-server
       #dockerfile: Dockerfile
@@ -73,7 +72,7 @@ services:
     networks:
       - asantapp-network
 
-  zipkin-server:
+ zipkin-server:
     image: openzipkin/zipkin
     #container_name: zipkin
     environment:
@@ -88,8 +87,8 @@ services:
       - asantapp-network
 
 
-  zuul-api-gateway:
-    image: heisenberg13contasoft/netflix-zuul-api-gateway-server:0.0.2
+ zuul-api-gateway:
+    image: heisenberg13contasoft/netflix-zuul-api-gateway-server:0.0.3
     #build:
      # context: netflix-zuul-api-gateway-server
       #dockerfile: Dockerfile
@@ -131,8 +130,8 @@ services:
 #        _\/\\\___\//\\\\\_\//\\\\\\\\\__\/\\\__________/\\\\\\\\\_\//\\\\\\\\/\\_\/\\\___\/\\\_ 
 #         _\///_____\/////___\/////////___\///__________\/////////___\////////\//__\///____\///__ 
  
-asantapp-users:
-        image: uniquedevelopment/asantapp-users:0.0.1
+ asantapp-users:
+        image: uniquedevelopment/asantapp-users:0.0.1-SNAPSHOT
         ports:
          - "8790"
         restart: always
@@ -149,8 +148,8 @@ asantapp-users:
           - asantapp-network
 
 
-asantapp-service-request:
-        image: uniquedevelopment/asantapp-service-request:0.0.1
+ asantapp-service-request:
+        image: uniquedevelopment/asantapp-service-request:0.0.1-SNAPSHOT
         ports:
          - "8775"
         restart: always
@@ -167,8 +166,8 @@ asantapp-service-request:
           - asantapp-network
 
 
-asantapp-qeydiyyat-data:
-        image: uniquedevelopment/asantapp-qeydiyyat-data:0.0.1
+ asantapp-qeydiyyat-data:
+        image: uniquedevelopment/asantapp-qeydiyyat-data:0.0.1-SNAPSHOT
         ports:
          - "8157"
         restart: always
@@ -185,8 +184,8 @@ asantapp-qeydiyyat-data:
           - asantapp-network
 
 
-asantapp-user-rank:
-        image: uniquedevelopment/asantapp-user-rank:0.0.1
+ asantapp-user-rank:
+        image: uniquedevelopment/asantapp-user-rank:0.0.1-SNAPSHOT
         ports:
          - "7676"
         restart: always
@@ -203,12 +202,11 @@ asantapp-user-rank:
           - asantapp-network
 
 
-asantapp-services:
-        image: uniquedevelopment/asantapp-services:0.0.1
+ asantapp-services:
+        image: uniquedevelopment/asantapp-services:0.0.1-SNAPSHOT
         ports:
          - "8585"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -221,12 +219,11 @@ asantapp-services:
           - asantapp-network
 
 
-asantapp-balancelog:
-        image: uniquedevelopment/asantapp-balancelog:0.0.1
+ asantapp-balancelog:
+        image: uniquedevelopment/asantapp-balancelog:0.0.1-SNAPSHOT
         ports:
          - "8786"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -239,8 +236,8 @@ asantapp-balancelog:
           - asantapp-network
 
 
-asantapp-user-confirm:
-        image: uniquedevelopment/asantapp-user-confirm:0.0.1
+ asantapp-user-confirm:
+        image: uniquedevelopment/asantapp-user-confirm:0.0.1-SNAPSHOT
         ports:
          - "6878"
         restart: always
@@ -257,12 +254,11 @@ asantapp-user-confirm:
           - asantapp-network
 
 
-asantapp-sms:
-        image: uniquedevelopment/asantapp-sms:0.0.1
+ asantapp-sms:
+        image: uniquedevelopment/asantapp-sms:0.0.1-SNAPSHOT
         ports:
          - "7577"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -275,12 +271,11 @@ asantapp-sms:
           - asantapp-network
 
 
-asantapp-user-balance:
-        image: uniquedevelopment/asantapp-user-balance:0.0.1
+ asantapp-user-balance:
+        image: uniquedevelopment/asantapp-user-balance:0.0.1-SNAPSHOT
         ports:
          - "8594"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -293,12 +288,11 @@ asantapp-user-balance:
           - asantapp-network
 
 
-asantapp-usercomments:
-        image: uniquedevelopment/asantapp-usercomments:0.0.1
+ asantapp-usercomments:
+        image: uniquedevelopment/asantapp-userscomments:0.0.1-SNAPSHOT
         ports:
          - "9643"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -311,12 +305,11 @@ asantapp-usercomments:
           - asantapp-network
 
 
-asantapp-user-services:
-        image: uniquedevelopment/asantapp-user-services:0.0.1
+ asantapp-user-services:
+        image: uniquedevelopment/asantapp-user-services:0.0.1-SNAPSHOT
         ports:
          - "8589"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -329,12 +322,11 @@ asantapp-user-services:
           - asantapp-network
 
 
-asantapp-login:
-        image: uniquedevelopment/asantapp-login:0.0.1
+ asantapp-login:
+        image: uniquedevelopment/asantapp-login:0.0.1-SNAPSHOT
         ports:
          - "8591"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -347,12 +339,11 @@ asantapp-login:
           - asantapp-network
 
 
-asantapp-userservice-data:
-        image: uniquedevelopment/asantapp-userservice-data:0.0.1
+ asantapp-userservice-data:
+        image: uniquedevelopment/asantapp-userservice-data:0.0.1-SNAPSHOT
         ports:
          - "6928"
         restart: always
-
         depends_on:
           - db-asantapp
          # - spring-cloud
@@ -379,10 +370,8 @@ asantapp-userservice-data:
 # //     //  //////     /// //  //       //       ////// 
 
 
-
-
 volumes:
-  redis_data:
+ redis_data:
 
 networks:
-  asantapp-network:
+ asantapp-network:
