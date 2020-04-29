@@ -131,7 +131,7 @@ services:
 #         _\///_____\/////___\/////////___\///__________\/////////___\////////\//__\///____\///__ 
  
  asantapp-users:
-        image: uniquedevelopment/asantapp-users:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-users:0.0.1
         ports:
          - "8790"
         restart: always
@@ -149,7 +149,7 @@ services:
 
 
  asantapp-service-request:
-        image: uniquedevelopment/asantapp-service-request:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-service-request:0.0.1
         ports:
          - "8775"
         restart: always
@@ -167,7 +167,7 @@ services:
 
 
  asantapp-qeydiyyat-data:
-        image: uniquedevelopment/asantapp-qeydiyyat-data:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-qeydiyyat-data:0.0.1
         ports:
          - "8157"
         restart: always
@@ -185,7 +185,7 @@ services:
 
 
  asantapp-user-rank:
-        image: uniquedevelopment/asantapp-user-rank:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-user-rank:0.0.1
         ports:
          - "7676"
         restart: always
@@ -203,7 +203,7 @@ services:
 
 
  asantapp-services:
-        image: uniquedevelopment/asantapp-services:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-services:0.0.1
         ports:
          - "8585"
         restart: always
@@ -220,7 +220,7 @@ services:
 
 
  asantapp-balancelog:
-        image: uniquedevelopment/asantapp-balancelog:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-balancelog:0.0.1
         ports:
          - "8786"
         restart: always
@@ -237,7 +237,7 @@ services:
 
 
  asantapp-user-confirm:
-        image: uniquedevelopment/asantapp-user-confirm:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-user-confirm:0.0.1
         ports:
          - "6878"
         restart: always
@@ -255,7 +255,7 @@ services:
 
 
  asantapp-sms:
-        image: uniquedevelopment/asantapp-sms:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-sms:0.0.1
         ports:
          - "7577"
         restart: always
@@ -272,7 +272,7 @@ services:
 
 
  asantapp-user-balance:
-        image: uniquedevelopment/asantapp-user-balance:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-user-balance:0.0.1
         ports:
          - "8594"
         restart: always
@@ -289,7 +289,7 @@ services:
 
 
  asantapp-usercomments:
-        image: uniquedevelopment/asantapp-userscomments:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-userscomments:0.0.1
         ports:
          - "9643"
         restart: always
@@ -306,7 +306,7 @@ services:
 
 
  asantapp-user-services:
-        image: uniquedevelopment/asantapp-user-services:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-user-services:0.0.1
         ports:
          - "8589"
         restart: always
@@ -323,7 +323,7 @@ services:
 
 
  asantapp-login:
-        image: uniquedevelopment/asantapp-login:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-login:0.0.1
         ports:
          - "8591"
         restart: always
@@ -340,7 +340,7 @@ services:
 
 
  asantapp-userservice-data:
-        image: uniquedevelopment/asantapp-userservice-data:0.0.1-SNAPSHOT
+        image: uniquedevelopment/asantapp-userservice-data:0.0.1
         ports:
          - "6928"
         restart: always
