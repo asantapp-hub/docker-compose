@@ -149,7 +149,7 @@ services:
 
 
  asantapp-service-request:
-        image: uniquedevelopment/asantapp-service-request:0.0.1
+        image: uniquedevelopment/asantapp-service-request:0.0.4
         ports:
          - "8775"
         restart: always
